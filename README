@@ -1,0 +1,75 @@
+SimplyMessages
+==============
+
+SimplyMessages is a Rails plugin providing a unified success/error messages handling (like those: flash.now[:succes] = 'Yeah').
+Based on the message_block plugin by Ben Hughes (http://github.com/railsgarden/message_block).
+
+
+Requirements
+============
+
+Rails version 2.2.2+
+
+
+Installation
+============
+
+git clone git://github.com/pjg/simply_messages.git vendor/plugins/simply_messages
+
+app/views/layouts/application.html.erb
+
+<%= messages_block %>
+
+By default the messages_block function will display all flash[:success] and flash[:error] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller).
+
+We can also specify the model we would like to display errors for, like this:
+
+<%= messages_block :for => :comment %>
+
+We can also display errors for more than one model:
+
+<%= messages_block :for => [:post, :comment] %>
+
+
+EXAMPLE 1
+=========
+
+controller:
+
+flash.now[:success] = 'Post saved'
+
+view:
+
+<%= messages_block %>
+
+will result in:
+
+<div class="success">
+<p>Post saved.</p>
+</div>
+
+
+EXAMPLE 2
+=========
+
+users_controller:
+
+@user.errors.add('name', 'name should not be empty')
+flash.now[:error] = 'Unable to add user'
+
+view:
+
+<%= messages_block %>
+
+will result in:
+
+<div class="error">
+<p>Unable to add user:</p>
+<ul>
+<li>name should not be empty</li>
+</ul>
+</div>
+
+
+
+Copyright (c) 2009 Paweł Gościcki, released under the MIT license
