@@ -14,7 +14,9 @@ Rails version 2.2.2+
 Installation
 ============
 
-git clone git://github.com/pjg/simply_messages.git vendor/plugins/simply_messages
+git submodule add git://github.com/pjg/simply_messages.git vendor/plugins/simply_messages
+git commit -m "Added simply_messages plugin as a submodule."
+
 
 app/views/layouts/application.html.erb
 
