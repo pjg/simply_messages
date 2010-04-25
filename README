@@ -15,7 +15,7 @@ Installation
 ============
 
 git submodule add git://github.com/pjg/simply_messages.git vendor/plugins/simply_messages
-git commit -m "Added simply_messages plugin as a submodule."
+git commit -m "Add simply_messages plugin as a submodule"
 
 
 app/views/layouts/application.html.erb
