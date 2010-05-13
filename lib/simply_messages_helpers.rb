@@ -29,18 +29,22 @@ module SimplyMessages
       # messages_block
       messages_block = ''
 
-      # flash[:success]
-      if flash[:success].present?
-        msg = content_tag(:p, flash[:success] + '.')
-        messages_block += content_tag(:div, msg, :class => 'success')
+      # flash[:success] or flash[:notice]
+      if flash[:success].present? or flash[:notice].present?
+
+        key = flash[:success].present? ? :success : :notice
+
+        msg = content_tag(:p, flash[key] + '.')
+        messages_block += content_tag(:div, msg, :class => key.to_s)
       end
 
-      # flash[:error] and all models errors
-      if flash[:error].present? or models_errors.any?
+      # flash[:error] or flash[:alert] or models errors
+      if flash[:error].present? or flash[:alert] or models_errors.any?
+        key = flash[:error].present? ? :error : :alert
         msg = ''
 
-        if flash[:error].present?
-          msg += content_tag(:p, flash[:error] + (models_errors.any? ? ':' : '.'))
+        if flash[key].present?
+          msg += content_tag(:p, flash[key] + (models_errors.any? ? ':' : '.'))
         end
 
         if models_errors.any?
@@ -51,7 +55,7 @@ module SimplyMessages
           msg += content_tag(:ul, errors.join)
         end
 
-        messages_block += content_tag(:div, msg, :class => 'error')
+        messages_block += content_tag(:div, msg, :class => key.to_s)
       end
 
       messages_block

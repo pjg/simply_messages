@@ -17,8 +17,18 @@ class MocksController < ApplicationController
     render :inline => '<%= messages_block %>'
   end
 
+  def notice
+    flash.now[:notice] = 'We have a notice'
+    render :inline => '<%= messages_block %>'
+  end
+
   def error
-    flash.now[:error] = 'No luck this time'
+    flash.now[:error] = 'Error: no luck this time'
+    render :inline => '<%= messages_block %>'
+  end
+
+  def alert
+    flash.now[:alert] = 'Alert: no luck this time'
     render :inline => '<%= messages_block %>'
   end
 
@@ -47,9 +57,19 @@ class MocksControllerTest < ActionController::TestCase
     assert_select 'div.success p', :text => /We have a success./
   end
 
+  def test_notice
+    get :notice
+    assert_select 'div.notice p', :text => /We have a notice./
+  end
+
   def test_error
     get :error
-    assert_select 'div.error p', :text => /No luck this time./
+    assert_select 'div.error p', :text => /Error: no luck this time./
+  end
+
+  def test_alert
+    get :alert
+    assert_select 'div.alert p', :text => /Alert: no luck this time./
   end
 
   def test_model_error

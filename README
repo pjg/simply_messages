@@ -24,6 +24,9 @@ app/views/layouts/application.html.erb
 
 By default the messages_block function will display all flash[:success] and flash[:error] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller).
 
+Will also display appropriate messages for :notice and :alert flash keys.
+
+
 We can also specify the model we would like to display errors for, like this:
 
 <%= messages_block :for => :comment %>
