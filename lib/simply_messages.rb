@@ -1,2 +1,1 @@
-require 'simply_messages_helpers'
-ActionView::Base.send(:include, SimplyMessages::Helpers)
+require File.join(File.dirname(__FILE__), 'simply_messages/railtie')
