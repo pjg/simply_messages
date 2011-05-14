@@ -1,0 +1,87 @@
+= simply_messages
+
+simply_messages is a Rails plugin providing a unified notice/alert messages handling (like those: flash.now[:notice] = 'Yeah').
+Based on the message_block plugin by Ben Hughes (http://github.com/railsgarden/message_block).
+
+
+== Requirements
+
+Rails version 3.0+
+
+
+== Installation
+
+Put this line in your Gemfile:
+
+  gem 'simply_messages'
+
+Then bundle:
+
+  bundle
+
+
+In `app/views/layouts/application.html.erb`:
+
+  <%= messages_block %>
+
+
+By default the messages_block function will display all flash[:notice] and flash[:alert] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller).
+
+Will also display appropriate messages for :success and :error flash keys.
+
+
+We can also specify the model we would like to display errors for, like this:
+
+  <%= messages_block :for => :comment %>
+
+We can also display errors for more than one model:
+
+  <%= messages_block :for => [:post, :comment] %>
+
+
+=== EXAMPLE 1
+
+controller:
+
+  flash.now[:notice] = 'Post saved'
+
+view:
+
+  <%= messages_block %>
+
+will result in:
+
+  <div class="notice">
+  <p>Post saved.</p>
+  </div>
+
+
+=== EXAMPLE 2
+
+users_controller:
+
+  @user.errors.add('name', 'name should not be empty')
+  flash.now[:alert] = 'Unable to add user'
+
+view:
+
+  <%= messages_block %>
+
+will result in:
+
+  <div class="alert">
+  <p>Unable to add user:</p>
+  <ul>
+  <li>name should not be empty</li>
+  </ul>
+  </div>
+
+
+== Contributing to simply_messages
+
+* Fork, fix, then send me a pull request.
+
+
+== Copyright
+
+Copyright (c) 2009-2011 Paweł Gościcki, released under the MIT license
