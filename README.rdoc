@@ -1,7 +1,7 @@
 = simply_messages
 
 simply_messages is a Rails plugin providing a unified notice/alert messages handling (like those: flash.now[:notice] = 'Yeah').
-Based on the message_block plugin by Ben Hughes (http://github.com/railsgarden/message_block).
+Based on the message_block by Ben Hughes (http://github.com/railsgarden/message_block).
 
 
 == Requirements
@@ -20,17 +20,26 @@ Then bundle:
   bundle
 
 
+simply_messages uses standard I18n translations to display errors and as such requires at least the following keys to be present:
+
+  activerecord:
+    errors:
+      template:
+        header:
+          one: "1 error prohibited this %{model} from being saved"
+          other: "%{count} errors prohibited this %{model} from being saved"
+
+
+== Usage
+
 In `app/views/layouts/application.html.erb`:
 
   <%= messages_block %>
 
 
-By default the messages_block function will display all flash[:notice] and flash[:alert] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller).
+By default the messages_block function will display all flash[:notice] and flash[:alert] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller). Will also display appropriate messages for :success and :error flash keys.
 
-Will also display appropriate messages for :success and :error flash keys.
-
-
-We can also specify the model we would like to display errors for, like this:
+We can also explicitly set the model we would like to display errors for, like this:
 
   <%= messages_block :for => :comment %>
 
@@ -52,27 +61,27 @@ view:
 will result in:
 
   <div class="notice">
-  <p>Post saved.</p>
+  <p>Post saved</p>
   </div>
 
 
 === EXAMPLE 2
 
-users_controller:
+Given a User model instance with one validation error:
 
-  @user.errors.add('name', 'name should not be empty')
-  flash.now[:alert] = 'Unable to add user'
+  user.errors
+  => #<OrderedHash {:name=>["can't be blank"]}>
 
-view:
+and this in view in the users controller:
 
   <%= messages_block %>
 
-will result in:
+will render:
 
   <div class="alert">
-  <p>Unable to add user:</p>
+  <p>1 error prohibited this User from being saved:</p>
   <ul>
-  <li>name should not be empty</li>
+  <li>Name can't be blank</li>
   </ul>
   </div>
 

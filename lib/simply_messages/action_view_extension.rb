@@ -7,7 +7,6 @@ module SimplyMessages
     module InstanceMethods
 
       def messages_block(options = {})
-
         # make options[:for] an array
         options[:for] ||= []
         options[:for] = [options[:for]] unless options[:for].is_a?(Array)
@@ -22,50 +21,45 @@ module SimplyMessages
           else
             model_object
           end
-        end.select { |m| !m.nil? }.uniq
-
-        # all models errors
-        models_errors = []
-        model_objects.each do |m|
-          errors = m.errors.entries.collect { |field, message| message }.select { |m| m.present? }
-          models_errors.concat(errors) if errors.any?
-        end
+        end.select { |m| m.present? }.uniq
 
         # messages_block
         messages_block = ''
 
-        if flash[:success].present? or flash[:notice].present?
-
-          msg = ''
-
-          key = flash[:success].present? ? :success : :notice
-
-          msg = content_tag(:p, flash[key] + '.')
-          messages_block += content_tag(:div, msg.html_safe, :class => key.to_s)
-        end
-
-        if flash[:error].present? or flash[:alert] or models_errors.any?
-
-          key = flash[:error].present? ? :error : :alert
-
-          msg = ''
-
+        # notice/success
+        flash_msg = ''
+        [:notice, :success].each do |key|
           if flash[key].present?
-            msg += content_tag(:p, flash[key] + (models_errors.any? ? ':' : '.'))
+            flash_msg += content_tag(:p, flash[key])
+            messages_block += content_tag(:div, flash_msg.html_safe, :class => key.to_s)
           end
-
-          if models_errors.any?
-            errors = ''
-
-            models_errors.each do |e|
-              errors << content_tag(:li, e)
-            end
-
-            msg += content_tag(:ul, errors.html_safe)
-          end
-
-          messages_block += content_tag(:div, msg.html_safe, :class => key.to_s)
         end
+
+        # alert/error
+        flash_msg = ''
+        [:alert, :error].each do |key|
+          flash_msg += content_tag(:p, flash[key]) if flash[key].present?
+        end
+
+        # all models errors
+        errors = ''
+        model_objects.each do |model|
+          if model.errors.any?
+            errors += content_tag(:p, I18n.translate(
+              model.errors.count > 1 ? :other : :one,
+              :count => model.errors.count,
+              :model => model.class.model_name.human,
+              :scope => [:activerecord, :errors, :template, :header]) + ':')
+
+            msg = ''
+            model.errors.full_messages.each do |e|
+              msg += content_tag(:li, e)
+            end
+            errors += content_tag(:ul, msg.html_safe)
+          end
+        end
+
+        messages_block += content_tag(:div, flash_msg.html_safe + errors.html_safe, :class => 'alert')
 
         messages_block.html_safe
       end
