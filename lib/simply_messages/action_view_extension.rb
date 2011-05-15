@@ -37,8 +37,12 @@ module SimplyMessages
 
         # alert/error
         flash_msg = ''
+        html_class = ''
         [:alert, :error].each do |key|
-          flash_msg += content_tag(:p, flash[key]) if flash[key].present?
+          if flash[key].present?
+            flash_msg += content_tag(:p, flash[key])
+            html_class += key.to_s
+          end
         end
 
         # all models errors
@@ -59,7 +63,7 @@ module SimplyMessages
           end
         end
 
-        messages_block += content_tag(:div, flash_msg.html_safe + errors.html_safe, :class => 'alert')
+        messages_block += content_tag(:div, flash_msg.html_safe + errors.html_safe, :class => (html_class.presence || 'alert'))
 
         messages_block.html_safe
       end

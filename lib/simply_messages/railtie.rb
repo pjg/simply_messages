@@ -11,4 +11,3 @@ module SimplyMessages
     end
   end
 end
-
