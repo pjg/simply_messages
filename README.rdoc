@@ -1,6 +1,6 @@
 = simply_messages
 
-simply_messages is a Rails plugin providing a unified notice/alert messages handling (like those: flash.now[:notice] = 'Yeah').
+simply_messages is a Rails plugin providing a unified notice/alert messages handling (like those: flash.now[:notice] = 'Yeah') and model validation errors.
 Based on the message_block by Ben Hughes (http://github.com/railsgarden/message_block).
 
 
@@ -37,7 +37,7 @@ In `app/views/layouts/application.html.erb`:
   <%= messages_block %>
 
 
-By default the messages_block function will display all flash[:notice] and flash[:alert] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller). Will also display appropriate messages for :success and :error flash keys.
+By default the messages_block function will display all flash[:notice] and flash[:alert] messages and all errors for model object associated by name with the current controller (so it will display all model errors for @user model when 'users' is the current controller). It will also display appropriate messages for :success and :error flash keys.
 
 We can also explicitly set the model we would like to display errors for, like this:
 
@@ -72,11 +72,11 @@ Given a User model instance with one validation error:
   user.errors
   => #<OrderedHash {:name=>["can't be blank"]}>
 
-and this in view in the users controller:
+and this in the view in the users controller:
 
   <%= messages_block %>
 
-will render:
+it will render:
 
   <div class="alert">
   <p>1 error prohibited this User from being saved:</p>

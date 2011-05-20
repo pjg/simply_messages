@@ -3,10 +3,17 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-require 'rake/rdoctask'
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
+end
+
+task :default => :spec
+
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   require 'simply_messages/version'
-
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "simply_messages #{SimplyMessages::VERSION}"
   rdoc.rdoc_files.include('README*')

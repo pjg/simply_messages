@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary = 'Unified flash notices and model error messages display solution'
   s.description = 'simply_messages is a unified flash and error messages display solution'
 
-  s.rubyforge_project = 'simply_messages'
+  s.rubyforge_project = 'simply-messages'
 
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -25,4 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', ['>= 3.0.0']
   s.add_development_dependency 'bundler', ['>= 1.0.0']
   s.add_development_dependency 'sqlite3', ['>= 0']
+  s.add_development_dependency 'rspec', ['>= 0']
+  s.add_development_dependency 'rspec-rails', ['>= 0']
+  s.add_development_dependency 'webrat', ['>= 0']
 end
