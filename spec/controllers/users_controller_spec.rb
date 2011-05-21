@@ -16,6 +16,17 @@ describe UsersController do
     specify { response.should have_selector('div.alert p', :content => 'Not too good') }
   end
 
+  describe "#new" do
+    before do
+      get :new
+    end
+
+    specify { response.should be_success }
+
+    specify { response.should_not have_selector('div.notice') }
+    specify { response.should_not have_selector('div.alert') }
+  end
+
   describe "#create" do
     context "without name" do
       before do

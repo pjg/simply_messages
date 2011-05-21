@@ -63,7 +63,9 @@ module SimplyMessages
           end
         end
 
-        messages_block += content_tag(:div, flash_msg.html_safe + errors.html_safe, :class => (html_class.presence || 'alert'))
+        if flash_msg.present? or errors.present?
+          messages_block += content_tag(:div, flash_msg.html_safe + errors.html_safe, :class => (html_class.presence || 'alert'))
+        end
 
         messages_block.html_safe
       end

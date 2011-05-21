@@ -8,14 +8,14 @@ ActiveRecord::Base.establish_connection 'test'
 
 # config
 app = Class.new(Rails::Application)
-app.config.secret_token = "2jv9wver8j3haskhf23b4j51ho8f8vh1"
-app.config.session_store :cookie_store, :key => "_simply_messages_session"
+app.config.secret_token = '2jv9wver8j3haskhf23b4j51ho8f8vh1'
+app.config.session_store :cookie_store, :key => '_simply_messages_session'
 app.config.active_support.deprecation = :log
 app.initialize!
 
 # route
 app.routes.draw do
-  resources :users, :only => [:index, :create]
+  resources :users, :only => [:index, :new, :create]
 end
 
 # model
@@ -32,12 +32,16 @@ class UsersController < ApplicationController
     flash.now[:notice] = 'Good'
     flash.now[:success] = 'Good'
     flash.now[:alert] = 'Not too good'
-    render :inline => "<%= messages_block %>"
+    render :inline => '<%= messages_block %>'
+  end
+
+  def new
+    render :inline => '<%= messages_block %>'
   end
 
   def create
     @user = User.create(params[:user])
-    render :inline => "<%= messages_block %>"
+    render :inline => '<%= messages_block %>'
   end
 end
 
